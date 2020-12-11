@@ -18,9 +18,10 @@ var c = canvas.getContext('2d');
 var bullets = []
 var lines = []
 var player = undefined
-var playerVelocity = 3;
+var playerVelocity = 5;
 var bulletVelocity = 10;
-var bulletRadius = 3;
+var bulletMaxRadius = 15;
+var bulletMaxBounce = 10;
 var mouse = undefined;
 
 /* #######################################################################################
@@ -75,7 +76,7 @@ class Player {
         c.arc(this.x,this.y,this.radius,0,Math.PI*2,false);
         c.strokeStyle = "black";
         c.stroke();
-        c.fillStyle = "red"
+        c.fillStyle = "black"
         c.fill();
     }
 
@@ -119,31 +120,37 @@ class Bullet{
         var dist = Math.sqrt(Math.pow(Math.abs(x2-x1),2)+ Math.pow(Math.abs(y2-y1),2));
         this.dx = bulletVelocity*(x2-x1)/dist;
         this.dy = bulletVelocity*(y2-y1)/dist;
-        this.radius = bulletRadius;
-        this.color = 'red';
-    }
-
+        var red = Math.round(255*Math.random());
+        var blue = Math.round(255*Math.random());
+        var green = Math.round(255*Math.random());
+        this.radius = Math.random()*bulletMaxRadius;
+        this.color = "rgb(" +red+","+ blue + ","+ green + ")";
+       
+    };
+    
+    bounce = bulletMaxBounce;
     draw(){
         c.beginPath()
         c.arc(this.x,this.y,this.radius,0,Math.PI*2, false)
         c.strokeStyle= this.color;
         c.stroke();
-        c.fill();
     }
 
     update()
     {
         if(this.x+this.radius > innerWidth || this.x-this.radius < 0){
             this.dx = -this.dx;
+            this.bounce--;
         }    
         if(this.y+this.radius > innerHeight || this.y-this.radius < 0){
             this.dy = -this.dy;
+            this.bounce--;
         }  
         this.x+=this.dx;
         this.y+=this.dy;
         this.draw();
     }
-}
+};
 
 class Line{
     constructor(x1,y1,x2,y2){
@@ -192,8 +199,8 @@ function init()
     canvasRect = canvas.getBoundingClientRect();
     player = new Player(innerWidth/2,innerHeight/2,0,0)
     mouse = new Mouse();
-    bullets = [];
-    lines = [];
+    bullets = new Array();
+    lines =  new Array();
 }
 
 function animate()
@@ -202,11 +209,28 @@ function animate()
     c.clearRect(0,0,innerWidth,innerHeight);
     player.update();
 
-    DrawLines();
+    //DrawLines();
     mouse.drawCoordinates();
+    UpdateBullets();
     DrawBullets();
+    DrawZQSD();
 }
 
+function UpdateBullets(){
+    if(lines === undefined) return;
+    var i = 0;
+    while( i < bullets.length)
+    {
+        if(bullets[i].bounce < 0)
+        {
+            bullets.splice(i,1)
+        }
+        else
+        {
+            i++;
+        }
+    }
+}
 function DrawLines()
 {
     if(lines != undefined)
@@ -218,14 +242,27 @@ function DrawLines()
 function DrawBullets(){
     if(bullets != undefined)
     bullets.forEach(element => {
-        element.update();
+            element.update();
     });
+}
+
+function DrawZQSD(){
+    c.beginPath()
+    c.strokeStyle = "black"
+    c.strokeRect(5,40,30,30)
+    c.strokeRect(40,5,30,30)
+    c.strokeRect(40,40,30,30)
+    c.strokeRect(75,40,30,30)
+    c.strokeText("z",51,24)
+    c.strokeText("q",16,59)
+    c.strokeText("s",51,59)
+    c.strokeText("d",86,59)
+    c.strokeText(" + Click",116,40)
 }
 
 function shoot(){
    lines.push(new Line(player.x, player.y,mouse.x,mouse.y))
-   bullet = new Bullet(player.x,player.y,mouse.x,mouse.y)
-   bullets.push(bullet);
+   bullets.push(new Bullet(player.x,player.y,mouse.x,mouse.y));
 }
 
 function mouseMove(event){
