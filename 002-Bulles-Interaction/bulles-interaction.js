@@ -26,7 +26,6 @@ var c = canvas.getContext('2d');
 
 
 window.addEventListener('mousemove', function (event){
-    console.log("")
     if(event.x >= canvasRect.x && event.y > canvasRect.y 
         && event.x < (canvasRect.x+ canvasRect.width)
         && event.y < (canvasRect.y+ canvasRect.height) ){
