@@ -1,0 +1,26 @@
+[
+    {
+        "entry":"alimentation",
+        "value": 300
+    },
+    {
+        "entry":"epargne",
+        "value": 100
+    },
+    {
+        "entry":"impots",
+        "value": 200
+    },
+    {
+        "entry":"sport",
+        "value": 50
+    },
+    {
+        "entry":"logement",
+        "value": 600
+    },
+    {
+        "entry":"divers",
+        "value": 250
+    }
+]

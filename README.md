@@ -14,3 +14,7 @@ Début de la prise en main du canvas et de javascript via 2 tuto assez simples a
 =============================
 
 Mise en place des acquis précédents en ajoutant une gestion du déplacement via le clavier et le lancement de projectiles à partir du joueur 
+
+4-Graphique-Camembert
+=============================
+Mise en place d'un camembert qui réagit au passage de la souris, basé sur des données json
