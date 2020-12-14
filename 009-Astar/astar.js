@@ -77,8 +77,8 @@ canvas.addEventListener("mouseleave", MouseReset);
                                 Functions 
 #######################################################################################*/
 function Initialize() {
-    canvas.width = container.clientWidth;
-    canvas.height = container.clientHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     canvas.style.backgroundColor = "#555";
     maxBlockWidth = (canvas.width - canvas.width % cellSize) / cellSize;
     maxBlockHeight = (canvas.height - canvas.height % cellSize) / cellSize;
@@ -177,14 +177,17 @@ function InitializeInfoDiv() {
 
     nbOpenNode = document.createElement("label");
     nbOpenNode.setAttribute("class", "info-label");
+    nbOpenNode.style = "background-color:#55f";
     infoDiv.appendChild(nbOpenNode);
 
     nbCloseNode = document.createElement("label");
     nbCloseNode.setAttribute("class", "info-label");
+    nbCloseNode.style = "background-color:#ff6";
     infoDiv.appendChild(nbCloseNode);
 
     nbPathNode = document.createElement("label");
     nbPathNode.setAttribute("class", "info-label");
+    nbPathNode.style = "background-color:#f5f";
     infoDiv.appendChild(nbPathNode);
 };
 
@@ -209,7 +212,7 @@ function Animate() {
 #######################################################################################*/
 
 function heuristic(cell1, cell2) {
-    if (!cell1 || !cell2)  return undefined;
+    if (!cell1 || !cell2) return undefined;
     const diag = Math.min(Math.abs(cell1.posX - cell2.posX), Math.abs(cell1.posY - cell2.posY)) * 14;
     const rest = Math.max(Math.abs(cell1.posX - cell2.posX), Math.abs(cell1.posY - cell2.posY)) * 10;
     return diag + rest;
